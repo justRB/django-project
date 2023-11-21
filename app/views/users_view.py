@@ -10,7 +10,7 @@ class UsersList(View):
     def get(self, request):
         try :
             users = Users.objects.values('id', 'username', 'created', 'updated')
-            return render(request, template_name='users_list.html', 
+            return render(request, template_name='users/users_list.html', 
                         context={'users' : users})
         except Exception:
             return HttpResponseServerError("Erreur 500 : Impossible de charger la liste d'utilisateurs")
@@ -19,7 +19,7 @@ class UsersList(View):
 class UsersCreate(View):
     def get(self, request):
         error = request.GET.get('error', False)
-        return render(request, template_name='users_create.html', 
+        return render(request, template_name='users/users_create.html', 
                       context={'error': error})
     
     def post(self, request):
@@ -55,7 +55,7 @@ class UsersUpdate(View):
         error = request.GET.get('error', False)
         try :
             user = Users.objects.get(id=id)
-            return render(request, template_name='users_update.html',
+            return render(request, template_name='users/users_update.html',
                         context={'user': user, 'error': error})
         except Exception:
             return HttpResponseServerError("Echec du chargement de l'utilisateur")

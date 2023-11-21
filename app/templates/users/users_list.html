@@ -2,9 +2,18 @@
     td {
         padding: 10px;
     }
+
+    .flex {
+        display: flex;
+        width: 200px;
+        justify-content: space-between;
+    }
 </style>
 
-<a href="{% url 'users_create' %}">Ajouter un utilisateur</a>
+<div class="flex">
+    <a href="{% url 'app_home' %}">Accueil</a>
+    <a href="{% url 'users_create' %}">Ajouter un utilisateur</a>
+</div>
 <h1>Liste des utilisateurs</h1>
 
 <table border='1'>
