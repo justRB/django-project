@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponseServerError
 from django.views import View
 from app.models import Users
+import bcrypt
 
 # READ 
 class UsersList(View):
@@ -29,7 +30,10 @@ class UsersCreate(View):
             if len(username) > 20 or len(password) > 20 or len(username) < 8 or len(password) < 8:
                 return redirect(reverse('users_create') + f'?error=true')
 
-            user = Users.objects.create(username=username, password=password)
+            salt = bcrypt.gensalt()
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+
+            user = Users.objects.create(username=username, password=hashed_password)
             user.save()
             return redirect('users_list')
         except Exception:
@@ -59,14 +63,12 @@ class UsersUpdate(View):
     def post(self, request, id):
         try :
             username = request.POST["username"]
-            password = request.POST["password"]
 
-            if len(username) > 20 or len(password) > 20 or len(username) < 8 or len(password) < 8:
+            if len(username) > 20 or len(username) < 8:
                 return redirect(reverse('users_update', args=[id]) + f'?error=true')
 
             user = Users.objects.get(id=id)
             user.username = username
-            user.password = password
             user.save()
             return redirect('users_list')
         except Exception:
