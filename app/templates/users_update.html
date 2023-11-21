@@ -1,0 +1,17 @@
+<a href="{% url 'users_list' %}">Revenir à la liste des utilisateurs</a>
+<h1>Modifier un utilisateur</h1>
+<form method="post">
+    {% csrf_token %}
+    <label for='username'>Nom d'utilisateur :</label><br>
+    <input type='text' id='username' name='username' maxlength="20" value="{{ user.username }}"><br><br>
+
+    <label for='password'>Mot de passe :</label><br>
+    <input type='password' id='password' name='password' maxlength="20" value="{{ user.password }}"><br><br>
+
+    <input type='submit' value='valider'>
+</form>
+
+{% if error %}
+    <p style="color: red">Les valeurs des champs ne sont pas correctes</p>
+    <p style="color: red">Minimum 8 caractères / Maximum 20 caractères</p>
+{% endif %}

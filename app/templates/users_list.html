@@ -1,0 +1,35 @@
+<style>
+    td {
+        padding: 10px;
+    }
+</style>
+
+<a href="{% url 'users_create' %}">Ajouter un utilisateur</a>
+<h1>Liste des utilisateurs</h1>
+
+<table border='1'>
+    <tr>
+        <th>Id</th>
+        <th>Nom d'utilisateur</th>
+        <th>Equipe</th>
+        <th>Date de création</th>
+        <th>Dernière modification</th>
+        <th>Modifier</th>
+        <th>Supprimer</th>
+    </tr>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            {% if user.team %}
+                <td>{{ user.team }}</td>
+            {% else %}
+                <td>Aucunes</td>
+            {% endif %}
+            <td>{{ user.created|date:"d/m/Y H:i" }}</td>
+            <td>{{ user.updated|date:"d/m/Y H:i" }}</td>
+            <td><a href="{% url 'users_update' user.id %}">Modifier</a></td>
+            <td><a href="{% url 'users_delete' user.id %}">Supprimer</a></td>
+        </tr>
+    {% endfor %}
+</table>
