@@ -1,0 +1,38 @@
+<style>
+    td {
+        padding: 10px;
+    }
+
+    .flex {
+        display: flex;
+    }
+</style>
+
+<div class="flex">
+    <a href="{% url 'app_home' %}">Accueil</a>
+    <span style="width:20px"></span>
+    <a href="{% url 'teams_create' %}">Ajouter une équipe</a>
+</div>
+
+<h1>Liste des équipes</h1>
+
+<table border='1'>
+    <tr>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Date de création</th>
+        <th>Dernière modification</th>
+        <th>Modifier</th>
+        <th>Supprimer</th>
+    </tr>
+    {% for team in teams %}
+        <tr>
+            <td>{{ team.id }}</td>
+            <td>{{ team.name }}</td>
+            <td>{{ team.created|date:"d/m/Y H:i" }}</td>
+            <td>{{ team.updated|date:"d/m/Y H:i" }}</td>
+            <td><a href="{% url 'teams_update' team.id %}">Modifier</a></td>
+            <td><a href="{% url 'teams_delete' team.id %}">Supprimer</a></td>        
+        </tr>
+    {% endfor %}
+</table>

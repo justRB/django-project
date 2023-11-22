@@ -47,7 +47,7 @@ class UsersDelete(View):
             user.delete()
             return redirect('users_list')  
         except Exception:
-            return HttpResponseServerError("Echec de la suppression de l'utilisateur")
+            return HttpResponseServerError("Erreur 500 : Echec de la suppression de l'utilisateur")
     
 # UPDATE
 class UsersUpdate(View):
@@ -58,7 +58,7 @@ class UsersUpdate(View):
             return render(request, template_name='users/users_update.html',
                         context={'user': user, 'error': error})
         except Exception:
-            return HttpResponseServerError("Echec du chargement de l'utilisateur")
+            return HttpResponseServerError("Erreur 500 : Echec du chargement de l'utilisateur")
     
     def post(self, request, id):
         try :
@@ -72,4 +72,4 @@ class UsersUpdate(View):
             user.save()
             return redirect('users_list')
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Echec de la création de l'utilisateur");
+            return HttpResponseServerError("Erreur 500 : Echec de la modification de l'utilisateur");

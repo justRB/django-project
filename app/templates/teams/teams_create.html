@@ -1,0 +1,14 @@
+<a href="{% url 'teams_list' %}">Revenir à la liste des équipes</a>
+<h1>Ajouter une équipe</h1>
+<form method="post">
+    {% csrf_token %}
+    <label for='name'>Nom :</label><br>
+    <input type='text' id='name' name='name' maxlength="20"><br><br>
+
+    <input type='submit' value='valider'>
+</form>
+
+{% if error %}
+    <p style="color: red">Les valeurs des champs ne sont pas correctes</p>
+    <p style="color: red">Minimum 8 caractères / Maximum 20 caractères</p>
+{% endif %}

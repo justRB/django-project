@@ -5,15 +5,15 @@
 
     .flex {
         display: flex;
-        width: 200px;
-        justify-content: space-between;
     }
 </style>
 
 <div class="flex">
     <a href="{% url 'app_home' %}">Accueil</a>
+    <span style="width:20px"></span>
     <a href="{% url 'users_create' %}">Ajouter un utilisateur</a>
 </div>
+
 <h1>Liste des utilisateurs</h1>
 
 <table border='1'>
