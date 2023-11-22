@@ -2,12 +2,13 @@ from django.urls import path
 from .views.users_view import *
 from .views.teams_view import *
 from .views.app_view import *
+from .views.api_view import *
 
 urlpatterns = [
-    # app
+    # App
     path('home/', AppHome.as_view(), name='app_home'),
 
-    # users 
+    # Users 
     path('users/list/',  UsersList.as_view(), name='users_list'),
     path('users/create/', UsersCreate.as_view(), name='users_create'),
     path('users/delete/<int:id>/', UsersDelete.as_view(), name='users_delete'),
@@ -15,9 +16,13 @@ urlpatterns = [
     path('users/shuffle/', UsersShuffle.as_view(), name='users_shuffle'),
     path('users/reset/', UsersReset.as_view(), name='users_reset'),
 
-    # teams
+    # Teams
     path('teams/list/', TeamsList.as_view(), name='teams_list'),
     path('teams/create/', TeamsCreate.as_view(), name='teams_create'),
     path('teams/delete/<int:id>/', TeamsDelete.as_view(), name='teams_delete'),
     path('teams/update/<int:id>/', TeamsUpdate.as_view(), name='teams_update'),
+
+    # Api
+    path('api/users/list/', ApiUsersList.as_view(), name='api_users_list'),
+    path('api/users/create/', ApiUsersCreate.as_view(), name='api_users_create'),
 ]
