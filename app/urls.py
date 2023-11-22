@@ -12,6 +12,8 @@ urlpatterns = [
     path('users/create/', UsersCreate.as_view(), name='users_create'),
     path('users/delete/<int:id>/', UsersDelete.as_view(), name='users_delete'),
     path('users/update/<int:id>/', UsersUpdate.as_view(), name='users_update'),
+    path('users/shuffle/', UsersShuffle.as_view(), name='users_shuffle'),
+    path('users/reset/', UsersReset.as_view(), name='users_reset'),
 
     # teams
     path('teams/list/', TeamsList.as_view(), name='teams_list'),

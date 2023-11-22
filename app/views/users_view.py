@@ -1,19 +1,20 @@
+import random
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseServerError
 from django.views import View
-from app.models import Users
+from app.models import Users, Teams
 import bcrypt
 
 # READ 
 class UsersList(View):
     def get(self, request):
         try :
-            users = Users.objects.values('id', 'username', 'created', 'updated')
+            users = Users.objects.select_related('team').values('id', 'username', 'created', 'updated', 'team__name')
             return render(request, template_name='users/users_list.html', 
                         context={'users' : users})
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Impossible de charger la liste d'utilisateurs")
+            return HttpResponseServerError("Impossible de charger la liste d'utilisateurs")
 
 # CREATE 
 class UsersCreate(View):
@@ -35,9 +36,10 @@ class UsersCreate(View):
 
             user = Users.objects.create(username=username, password=hashed_password)
             user.save()
+
             return redirect('users_list')
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Echec de la création de l'utilisateur");
+            return HttpResponseServerError("Echec de la création de l'utilisateur");
 
 # DELETE
 class UsersDelete(View):
@@ -45,9 +47,10 @@ class UsersDelete(View):
         try :
             user = Users.objects.get(id=id)
             user.delete()
+
             return redirect('users_list')  
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Echec de la suppression de l'utilisateur")
+            return HttpResponseServerError("Echec de la suppression de l'utilisateur")
     
 # UPDATE
 class UsersUpdate(View):
@@ -55,10 +58,11 @@ class UsersUpdate(View):
         error = request.GET.get('error', False)
         try :
             user = Users.objects.get(id=id)
+
             return render(request, template_name='users/users_update.html',
                         context={'user': user, 'error': error})
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Echec du chargement de l'utilisateur")
+            return HttpResponseServerError("Echec du chargement de l'utilisateur")
     
     def post(self, request, id):
         try :
@@ -70,6 +74,47 @@ class UsersUpdate(View):
             user = Users.objects.get(id=id)
             user.username = username
             user.save()
+
             return redirect('users_list')
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Echec de la modification de l'utilisateur");
+            return HttpResponseServerError("Echec de la modification de l'utilisateur");
+
+# ADD TEAM TO PLAYERS
+class UsersShuffle(View):
+    def get(self, request):
+        try:
+            users = list(Users.objects.all())
+            teams = Teams.objects.all()
+
+            teams_ids = list(teams.values_list('id', flat=True))
+            random.shuffle(teams_ids)
+            random.shuffle(users)
+
+            index = 0
+            for user in users:
+                user.team = Teams.objects.get(id=teams_ids[index])
+                user.save()
+
+                if (index + 1) < len(teams_ids):
+                    index += 1
+                else:
+                    index = 0
+                
+            return redirect('users_list')
+        except Exception as e:
+            print(e)
+            return HttpResponseServerError("Impossible de mélanger les utilisateurs dans des équipes")
+
+# RESET TEAM TO PLAYERS
+class UsersReset(View):
+    def get(self, request):
+        try:
+            users = list(Users.objects.all())
+
+            for user in users:
+                user.team = None
+                user.save()
+
+            return redirect('users_list')
+        except Exception:
+            return HttpResponseServerError("Impossible de réinitialiser les équipes des utilisateurs")

@@ -12,7 +12,7 @@ class TeamsList(View):
             return render(request, template_name='teams/teams_list.html',
                           context={'teams': teams})
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Impossible de charger la liste d'équipes")
+            return HttpResponseServerError("Impossible de charger la liste d'équipes")
         
 # CREATE
 class TeamsCreate(View):
@@ -32,7 +32,7 @@ class TeamsCreate(View):
             team.save()
             return redirect('teams_list')
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Echec de la création de l'équipe")
+            return HttpResponseServerError("Echec de la création de l'équipe")
 
 # DELETE
 class TeamsDelete(View):
@@ -42,7 +42,7 @@ class TeamsDelete(View):
             team.delete()
             return redirect('teams_list')
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Echec de la suppression de l'équipe")
+            return HttpResponseServerError("Echec de la suppression de l'équipe")
 
 # UPDATE
 class TeamsUpdate(View):
@@ -53,7 +53,7 @@ class TeamsUpdate(View):
             return render(request, template_name='teams/teams_update.html',
                           context={'team': team, 'error': error})
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Echec du chargement de l'équipe")
+            return HttpResponseServerError("Echec du chargement de l'équipe")
 
     def post(self, request, id):
         try:
@@ -67,4 +67,4 @@ class TeamsUpdate(View):
             team.save()
             return redirect('teams_list')
         except Exception:
-            return HttpResponseServerError("Erreur 500 : Echec de la modification de l'équipe")
+            return HttpResponseServerError("Echec de la modification de l'équipe")

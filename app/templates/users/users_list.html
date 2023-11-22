@@ -12,6 +12,10 @@
     <a href="{% url 'app_home' %}">Accueil</a>
     <span style="width:20px"></span>
     <a href="{% url 'users_create' %}">Ajouter un utilisateur</a>
+    <span style="width:20px"></span>
+    <a href="{% url 'users_shuffle' %}">Répartir aléatoirement les joueurs dans des équipes</a>
+    <span style="width:20px"></span>
+    <a href="{% url 'users_reset' %}">Vider les joueurs de leur équipe</a>
 </div>
 
 <h1>Liste des utilisateurs</h1>
@@ -30,10 +34,10 @@
         <tr>
             <td>{{ user.id }}</td>
             <td>{{ user.username }}</td>
-            {% if user.team %}
-                <td>{{ user.team }}</td>
+            {% if user.team__name %}
+                <td>{{ user.team__name }}</td>
             {% else %}
-                <td>Aucunes</td>
+                <td>Aucune</td>
             {% endif %}
             <td>{{ user.created|date:"d/m/Y H:i" }}</td>
             <td>{{ user.updated|date:"d/m/Y H:i" }}</td>
