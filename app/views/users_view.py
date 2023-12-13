@@ -79,7 +79,7 @@ class UsersUpdate(View):
         except Exception:
             return HttpResponseServerError("Echec de la modification de l'utilisateur");
 
-# ADD TEAM TO PLAYERS
+# ADD TEAM TO USERS
 class UsersShuffle(View):
     def get(self, request):
         try:
@@ -105,7 +105,7 @@ class UsersShuffle(View):
             print(e)
             return HttpResponseServerError("Impossible de mélanger les utilisateurs dans des équipes")
 
-# RESET TEAM TO PLAYERS
+# RESET TEAMS TO USERS
 class UsersReset(View):
     def get(self, request):
         try:

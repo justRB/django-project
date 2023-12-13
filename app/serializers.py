@@ -10,3 +10,8 @@ class UsersListSerializer(serializers.ModelSerializer):
 
     def get_team_name(self, user):
         return user.team.name if user.team else None
+    
+class UsersCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Users
+        fields = ['username', 'password', 'isAdmin']
