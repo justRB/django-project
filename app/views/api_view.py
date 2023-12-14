@@ -6,6 +6,13 @@ from app.models import Users
 from app.serializers import *
 
 
+# READ USER
+class APIUsersView(APIView):
+    def get(self, request, id):
+        user = Users.objects.get(id=id)
+        serializer = UsersListSerializer(user)
+        return Response(serializer.data)
+
 # READ USERS
 class ApiUsersList(APIView):
     def get(self, request):
@@ -62,7 +69,7 @@ class APIUsersReset(APIView):
     
             return Response(serializer.data, status=status.HTTP_200_OK) 
         except:
-            return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # ADD TEAMS TO USERS
 class APIUsersShuffle(APIView):
@@ -89,4 +96,4 @@ class APIUsersShuffle(APIView):
                 
             return  Response(serializer.data, status=status.HTTP_200_OK)
         except:
-            return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
