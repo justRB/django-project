@@ -5,9 +5,10 @@ from django.http import HttpResponseServerError
 from django.views import View
 from app.models import Users, Teams
 import bcrypt
+from app.views.auth_view import LoginRequired
 
-# READ 
-class UsersList(View):
+# READ
+class UsersList(LoginRequired, View):
     def get(self, request):
         try :
             users = Users.objects.select_related('team').values('id', 'username', 'created', 'updated', 'team__name')
@@ -17,7 +18,7 @@ class UsersList(View):
             return HttpResponseServerError("Impossible de charger la liste d'utilisateurs")
 
 # CREATE 
-class UsersCreate(View):
+class UsersCreate(LoginRequired, View):
     def get(self, request):
         error = request.GET.get('error', False)
         return render(request, template_name='users/users_create.html', 
@@ -42,7 +43,7 @@ class UsersCreate(View):
             return HttpResponseServerError("Echec de la création de l'utilisateur");
 
 # DELETE
-class UsersDelete(View):
+class UsersDelete(LoginRequired, View):
     def get(self, request, id):
         try :
             user = Users.objects.get(id=id)
@@ -53,7 +54,7 @@ class UsersDelete(View):
             return HttpResponseServerError("Echec de la suppression de l'utilisateur")
     
 # UPDATE
-class UsersUpdate(View):
+class UsersUpdate(LoginRequired, View):
     def get(self, request, id):
         error = request.GET.get('error', False)
         try :
@@ -80,7 +81,7 @@ class UsersUpdate(View):
             return HttpResponseServerError("Echec de la modification de l'utilisateur");
 
 # ADD TEAM TO USERS
-class UsersShuffle(View):
+class UsersShuffle(LoginRequired, View):
     def get(self, request):
         try:
             users = list(Users.objects.all())
@@ -106,7 +107,7 @@ class UsersShuffle(View):
             return HttpResponseServerError("Impossible de mélanger les utilisateurs dans des équipes")
 
 # RESET TEAMS TO USERS
-class UsersReset(View):
+class UsersReset(LoginRequired, View):
     def get(self, request):
         try:
             users = list(Users.objects.all())

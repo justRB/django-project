@@ -3,9 +3,10 @@ from django.urls import reverse
 from django.http import HttpResponseServerError
 from django.views import View
 from app.models import Teams
+from app.views.auth_view import LoginRequired
 
 # READ
-class TeamsList(View):
+class TeamsList(LoginRequired, View):
     def get(self, request):
         try:
             teams = Teams.objects.all()
@@ -15,7 +16,7 @@ class TeamsList(View):
             return HttpResponseServerError("Impossible de charger la liste d'équipes")
         
 # CREATE
-class TeamsCreate(View):
+class TeamsCreate(LoginRequired, View):
     def get(selft, request):
         error = request.GET.get('error', False)
         return render(request, template_name='teams/teams_create.html',
@@ -35,7 +36,7 @@ class TeamsCreate(View):
             return HttpResponseServerError("Echec de la création de l'équipe")
 
 # DELETE
-class TeamsDelete(View):
+class TeamsDelete(LoginRequired, View):
     def get(self, request, id):
         try:
             team = Teams.objects.get(id=id)
@@ -45,7 +46,7 @@ class TeamsDelete(View):
             return HttpResponseServerError("Echec de la suppression de l'équipe")
 
 # UPDATE
-class TeamsUpdate(View):
+class TeamsUpdate(LoginRequired, View):
     def get(self, request, id):
         error = request.GET.get('error', False)
         try:

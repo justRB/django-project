@@ -3,13 +3,16 @@ from .views.users_view import *
 from .views.teams_view import *
 from .views.app_view import *
 from .views.api_view import *
+from .views.auth_view import *
 
 urlpatterns = [
     # App
+    path('login/', UserLogin.as_view(), name='auth_login'),
+    path('logout/', UserLogout.as_view(), name='auth_logout'),
     path('home/', AppHome.as_view(), name='app_home'),
 
     # Users 
-    path('users/list/',  UsersList.as_view(), name='users_list'),
+    path('users/list/', UsersList.as_view(), name='users_list'),
     path('users/create/', UsersCreate.as_view(), name='users_create'),
     path('users/delete/<int:id>/', UsersDelete.as_view(), name='users_delete'),
     path('users/update/<int:id>/', UsersUpdate.as_view(), name='users_update'),

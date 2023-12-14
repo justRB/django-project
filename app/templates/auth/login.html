@@ -1,0 +1,15 @@
+<h1>Se connecter</h1>
+<form method="post">
+    {% csrf_token %}
+    <label for='username'>Nom d'utilisateur :</label><br>
+    <input type='text' id='username' name='username' maxlength="20"><br><br>
+
+    <label for='password'>Mot de passe :</label><br>
+    <input type='password' id='password' name='password' maxlength="20"><br><br>
+
+    <input type='submit' value='valider'>
+</form>
+
+{% if error %}
+    <p style="color: red">Nom d'utilisateur/Mot de passe incorrect</p>
+{% endif %}

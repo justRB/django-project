@@ -15,34 +15,30 @@ class UsersListSerializer(serializers.ModelSerializer):
 
 # CREATE USERS SERIALIZER   
 class UsersCreateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
     class Meta:
         model = Users
         fields = ['username', 'password', 'isAdmin']
-        extra_kwargs = {
-            'password': {'write_only': True},
-        }
 
     def create(self, validated_data):
         if 'password' in validated_data:
             salt = bcrypt.gensalt()
             hashed_password = bcrypt.hashpw(validated_data['password'].encode('utf-8'), salt)
-            validated_data['password'] = hashed_password.decode('utf-8')
+            validated_data['password'] = hashed_password
 
         return super().create(validated_data)
 
 # UPDATE USERS SERIALIZER
 class UsersUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
     class Meta:
         model = Users
         fields = ['username', 'password', 'isAdmin']
-        extra_kwargs = {
-            'password': {'write_only': True},
-        }
 
     def update(self, instance, validated_data):
         if 'password' in validated_data:
             salt = bcrypt.gensalt()
             hashed_password = bcrypt.hashpw(validated_data['password'].encode('utf-8'), salt)
-            validated_data['password'] = hashed_password.decode('utf-8')
+            validated_data['password'] = hashed_password
 
         return super().update(instance, validated_data)
