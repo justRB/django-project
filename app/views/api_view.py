@@ -9,9 +9,12 @@ from app.serializers import *
 # READ USER
 class APIUsersView(APIView):
     def get(self, request, id):
-        user = Users.objects.get(id=id)
-        serializer = UsersListSerializer(user)
-        return Response(serializer.data)
+        try:
+            user = Users.objects.get(id=id)
+            serializer = UsersListSerializer(user)
+            return Response(serializer.data)
+        except Exception:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 # READ USERS
 class ApiUsersList(APIView):
@@ -27,7 +30,7 @@ class ApiUsersCreate(APIView):
             if (serializer.is_valid()):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     
 # DELETE USER
 class APIUsersDelete(generics.DestroyAPIView):
@@ -41,8 +44,8 @@ class APIUsersDelete(generics.DestroyAPIView):
             serializer = self.get_serializer(instance)
             self.perform_destroy(instance)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         
 # UPDATE USER
 class APIUsersUpdate(APIView):
@@ -53,7 +56,7 @@ class APIUsersUpdate(APIView):
         if (serializer.is_valid()):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
      
 # RESET TEAMS TO USERS   
 class APIUsersReset(APIView):
@@ -97,3 +100,56 @@ class APIUsersShuffle(APIView):
             return  Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+# READ TEAM
+class APITeamsView(APIView):
+    def get(self, request, id):
+        try:
+
+            team = Teams.objects.get(id=id)
+            serializer = TeamsListSerializer(team)
+            return Response(serializer.data)
+        except Exception:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+# READ TEAMS
+class APITeamsList(APIView):
+    def get(self, request):
+        teams = Teams.objects.all()
+        serializer = TeamsListSerializer(teams, many=True)
+        return Response(serializer.data)
+    
+# CREATE TEAM
+class APITeamsCreate(APIView):
+    def post(self, request):
+        serializer = TeamsCreateUpdateSerializer(data=request.data)
+        if (serializer.is_valid()):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+# DELETE TEAM
+class APITeamsDelete(generics.DestroyAPIView):
+    queryset = Teams.objects.all()
+    serializer_class = TeamsListSerializer
+    lookup_field = 'id'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance)
+            self.perform_destroy(instance)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+# UPDATE TEAM
+class APITeamsUpdate(APIView):
+    def post(self, request, id):
+        team = Teams.objects.get(id=id)
+
+        serializer = TeamsCreateUpdateSerializer(team, data=request.data, partial=False)
+        if (serializer.is_valid()):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -25,12 +25,19 @@ urlpatterns = [
     path('teams/delete/<int:id>/', TeamsDelete.as_view(), name='teams_delete'),
     path('teams/update/<int:id>/', TeamsUpdate.as_view(), name='teams_update'),
 
-    # Api
-    path('api/users/list/', ApiUsersList.as_view(), name='api_users_list'),
+    # Api Users
     path('api/users/view/<int:id>/', APIUsersView.as_view(), name='api_users_view'),
+    path('api/users/list/', ApiUsersList.as_view(), name='api_users_list'),
     path('api/users/create/', ApiUsersCreate.as_view(), name='api_users_create'),
     path('api/users/delete/<int:id>/', APIUsersDelete.as_view(), name='api_users_delete'),
     path('api/users/update/<int:id>/', APIUsersUpdate.as_view(), name='api_users_update'),
     path('api/users/shuffle/', APIUsersShuffle.as_view(), name='api_users_shuffle'),
     path('api/users/reset/', APIUsersReset.as_view(), name='api_users_reset'),
+
+    # Api Teams
+    path('api/teams/view/<int:id>/', APITeamsView.as_view(), name='api_teams_view'),
+    path('api/teams/list/', APITeamsList.as_view(), name='api_teams_list'),
+    path('api/teams/create/', APITeamsCreate.as_view(), name='api_teams_create'),
+    path('api/teams/delete/<int:id>/', APITeamsDelete.as_view(), name='api_teams_delete'),
+    path('api/teams/update/<int:id>/', APITeamsUpdate.as_view(), name='api_teams_update'),
 ]

@@ -42,3 +42,15 @@ class UsersUpdateSerializer(serializers.ModelSerializer):
             validated_data['password'] = hashed_password
 
         return super().update(instance, validated_data)
+    
+# READ TEAMS SERIALIZER
+class TeamsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teams
+        fields = ['id', 'name', 'created', 'updated']
+
+# CREATE / UPDATE TEAMS SERIALIZER
+class TeamsCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teams
+        fields = ['name']
